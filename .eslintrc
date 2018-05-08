@@ -1,0 +1,27 @@
+---
+root: true
+parser: esprima
+extends: airbnb-base/legacy
+env:
+  browser: true
+
+parserOptions:
+  sourceType: module
+
+rules:
+  no-debugger: 2
+  vars-on-top: off
+  no-control-regex: off
+  no-multi-assign: off
+  no-param-reassign: off
+  no-tabs: off
+  no-bitwise: off
+
+  comma-dangle:
+    - warn
+    - always-multiline
+
+  indent:
+    - 2
+    - tab
+    - SwitchCase: 1
