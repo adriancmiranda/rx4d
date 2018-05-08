@@ -1,5 +1,6 @@
 const rx4d = require('rx4d');
 
+const rxPath = rx4d.charset('@$0-9a-zA-Z_\\s-.\\/').oneOrMoreTimes;
 const reNamedExpression = rx4d
   .group(rx4d.value('import').or.value('export'))
   .zeroOrOneTime
@@ -14,7 +15,7 @@ const reNamedExpression = rx4d
   .group('from')
   .group(rx4d.whiteSpace.oneOrMoreTimes)
   .group(rx4d.charset('\'"`'))
-  .group(path)
+  .group(rxPath)
   .group(rx4d.charset('\'"`'))
   .zeroOrOneTime
   .flags('gm')
