@@ -2,7 +2,7 @@ const objectChain = require('object-chain');
 
 const rx4d = (fn) => function _() {
 	return fn.apply(this, Array.from(arguments).reduce((acc, arg, i) => {
-		if (typeof arg[i] === 'function') arg[i] = arg[i]();
+		if (typeof arg === 'function') arguments[i] = arg();
 		return acc;
 	}, arguments));
 };

@@ -23,4 +23,6 @@ test('rx4d', t => {
 		.flags('gm')
 	;
 	t.true(namedExpression() instanceof RegExp, '".flags" should return a Regular Expression');
+	t.is(namedExpression().source, '(import|export)?(\\s+)?(\\})(\\s*)([$0-9A-Za-z_\\s]*[^\\s])(\\s*)(\\})(\\s+)(from)(\\s+)([\'"`])([\'"`]+)([\'"`])?')
+	t.is(namedExpression().flags, 'gm')
 });
