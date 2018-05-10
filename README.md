@@ -53,50 +53,49 @@ const reNamedExpression = rxNamedExpression.flags('gm')();
 ## compositions:
 
 ```js
-beginningOfInput: Getter
-endOfInput: Getter
-anySingleCharExceptTheNewline: Getter
-zeroOrMoreTimes: Getter
-oneOrMoreTimes: Getter
-zeroOrOneTime: Getter
-or: Getter
-escape: Getter
-backslash: Getter
-backspace: Getter
-nonWordBoundary: Getter
-digit: Getter
-nonDigitChar: Getter
-formFeed: Getter
-lineFeed: Getter
-carriageReturn: Getter
-whiteSpace: Getter
-tab: Getter
-verticalTab: Getter
-alphanumeric: Getter
-nonWordChar: Getter
-nil: Getter
-upercaseVowel: Getter
-lowercaseVowel: Getter
-uppercaseConsonant: Getter
-lowercaseConsonant: Getter
-lowercase: Getter
-uppercase: Getter
-letter: Getter
-numeric: Getter
-varchar: Getter
-eol: Getter
-quote: Function
-value: Function
-controlChar: Function
-notRemember: Function
-ifFollowedBy: Function
-ifNotFollowedBy: Function
-notCharset: Function
-charset: Function
-size: Function
-atLeast: Function
-atMost: Function
-group: Function
-range: Function
-flags: Function
+beginningOfInput
+endOfInput
+anySingleCharExceptTheNewline
+zeroOrMoreTimes
+oneOrMoreTimes
+zeroOrOneTime
+or
+escape
+backslash
+backspace
+nonWordBoundary
+digit
+nonDigitChar
+formFeed
+lineFeed
+carriageReturn
+whiteSpace
+tab
+verticalTab
+alphanumeric
+nonWordChar
+nil
+upercaseVowel
+lowercaseVowel
+uppercaseConsonant
+lowercaseConsonant
+lowercase
+uppercase
+letter
+numeric
+varchar
+eol
+value(value)
+controlChar(value)
+notRemember(value)
+ifFollowedBy(value)
+ifNotFollowedBy(value)
+notCharset(value)
+charset(value)
+size(value)
+atLeast(value)
+atMost(value)
+group(value)
+range(min, max)
+flags(value)
 ```
