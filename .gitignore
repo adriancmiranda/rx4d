@@ -39,7 +39,9 @@ Session.vim
 # dotfiles
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .*
+!.bin/
 !.eslintrc*
+!.babelrc
 !.editorconfig
 !.gitattributes
 !.gitignore

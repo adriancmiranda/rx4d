@@ -1,7 +1,7 @@
 ---
 root: true
-parser: esprima
-extends: airbnb-base/legacy
+parser: babel-eslint
+extends: airbnb
 env:
   browser: true
 
@@ -15,6 +15,10 @@ rules:
   no-multi-assign: off
   no-param-reassign: off
   no-tabs: off
+  prefer-arrow-callback: off
+  object-curly-newline: off
+  prefer-rest-params: off
+  import/extensions: off
   no-bitwise: off
 
   comma-dangle:

@@ -1,7 +1,7 @@
 const rx4d = require('rx4d');
 
 const rxPath = rx4d.charset('@$0-9a-zA-Z_\\s-.\\/').oneOrMoreTimes;
-const reNamedExpression = rx4d
+const rxNamedExpression = rx4d
   .group(rx4d.value('import').or.value('export'))
   .zeroOrOneTime
   .group(rx4d.whiteSpace.oneOrMoreTimes)
@@ -18,10 +18,10 @@ const reNamedExpression = rx4d
   .group(rxPath)
   .group(rx4d.charset('\'"`'))
   .zeroOrOneTime
-  .flags('gm')
-  ()
 ;
+const reNamedExpression = rxNamedExpression.flags('gm')();
 [
-reNamedExpression.match("import { pattern as PATTERN } from './foo/bar';"),
-reNamedExpression.match("export { regexp as REGULAR_EXPRESSION } from './foo/bar'"),
+rxNamedExpression(),
+"import { pattern as PATTERN } from './foo/bar';".match(reNamedExpression),
+"export { regexp as REGULAR_EXPRESSION } from './foo/bar'".match(reNamedExpression),
 ];
