@@ -27,7 +27,23 @@ const rxNamedExpression = rx4d
   .zeroOrOneTime
 ;
 
-console.log(rxNamedExpression()); // => (import|export)?(\s+)?(\{)(\s*)([$0-9A-Za-z_\s]*[^\s])(\s*)(\})(\s+)(from)(\s+)(['"`])([@$0-9a-zA-Z_\s-.\/]+)(['"`])?
+console.log(rxNamedExpression());
+// ==> (import|export)
+// ... ?
+// ... (\s+)
+// ... ?
+// ... (\{)
+// ... (\s*)
+// ... ([$0-9A-Za-z_\s]*[^\s])
+// ... (\s*)
+// ... (\})
+// ... (\s+)
+// ... (from)
+// ... (\s+)
+// ... (['"`])
+// ... ([@$0-9a-zA-Z_\s-.\/]+)
+// ... (['"`])
+// ... ?
 
 const reNamedExpression = rxNamedExpression.flags('gm')();
 "import { pattern as PATTERN } from './foo/bar';".match(reNamedExpression);
