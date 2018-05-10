@@ -1,7 +1,8 @@
 # rx4d
 > RegExp 4 dummies
 
-## usage [_playground_](https://npm.runkit.com/rx4d):
+## usage:
+> [_playground_](https://npm.runkit.com/rx4d)
 
 ```js
 const rx4d = require('rx4d');
