@@ -1,7 +1,7 @@
 # rx4d
 > RegExp 4 dummies
 
-## usage:
+## Usage:
 > [_playground_](https://npm.runkit.com/rx4d)
 
 ```js
@@ -50,7 +50,7 @@ const reNamedExpression = rxNamedExpression.flags('gm')();
 "export { regexp as REGULAR_EXPRESSION } from './foo/bar'".match(reNamedExpression);
 ```
 
-## compositions:
+## Compositions:
 
 ```js
 beginningOfInput
@@ -85,6 +85,8 @@ letter
 numeric
 varchar
 eol
+repeat()
+quote(value)
 value(value)
 controlChar(value)
 notRemember(value)
