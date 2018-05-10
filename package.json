@@ -25,6 +25,7 @@
     "release": "standard-version"
   },
   "dependencies": {
+    "describe-type": "0.7.0",
     "object-chain": "1.0.3"
   },
   "devDependencies": {

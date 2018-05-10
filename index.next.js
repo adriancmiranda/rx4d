@@ -1,8 +1,9 @@
+import string from 'describe-type/source/is/string';
 import objectChain from 'object-chain';
 
 const reEscapeRegExp = /[-[\]{}()*+?.,\\^$|#\s]/g;
 const escapeRegExp = (self, value) => {
-	value = typeof value === 'string' || value instanceof String ? value : '';
+	value = string(value) ? value : '';
 	reEscapeRegExp.lastIndex = 0;
 	return value.replace(reEscapeRegExp, '\\$&');
 };

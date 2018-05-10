@@ -8,8 +8,8 @@
  *                       
  * ~~~~~~~~~~ rx4d v1.0.2
  * 
- * @commit a67229d930e372454237244f6a6f3f57606f5c5b
- * @moment Wednesday, May 9, 2018 11:18 PM
+ * @commit da2aa1bc4d2f024a77f2dd6b19c28f1f8b78131f
+ * @moment Thursday, May 10, 2018 6:59 AM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -27,8 +27,8 @@
 	 * @param {any} value
 	 * @returns {Boolean}
 	 */
-	function callable(value) {
-		return typeof value === 'function';
+	function string(value) {
+		return typeof value === 'string' || value instanceof String;
 	}
 
 	/**
@@ -38,8 +38,8 @@
 	 * @param {any} value
 	 * @returns {Boolean}
 	 */
-	function string(value) {
-		return typeof value === 'string' || value instanceof String;
+	function callable(value) {
+		return typeof value === 'function';
 	}
 
 	/**
@@ -158,7 +158,7 @@
 
 	var reEscapeRegExp = /[-[\]{}()*+?.,\\^$|#\s]/g;
 	var escapeRegExp = function (self, value) {
-		value = typeof value === 'string' || value instanceof String ? value : '';
+		value = string(value) ? value : '';
 		reEscapeRegExp.lastIndex = 0;
 		return value.replace(reEscapeRegExp, '\\$&');
 	};
