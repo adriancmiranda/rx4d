@@ -69,10 +69,6 @@ verticalTab
 alphanumeric
 nonWordChar
 nil
-upercaseVowel
-lowercaseVowel
-uppercaseConsonant
-lowercaseConsonant
 lowercase
 uppercase
 letter
