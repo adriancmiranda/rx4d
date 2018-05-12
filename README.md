@@ -2,36 +2,31 @@
 > RegExp 4 dummies
 
 ## Usage:
-> [_playground_](https://npm.runkit.com/rx4d)
+> [_runkit_](https://npm.runkit.com/rx4d)
 
 ```js
-const rx4d = require('rx4d');
+const { match } = require('rx4d');
 
-const rxPath = rx4d.charset('@$0-9a-zA-Z_\\s-.\\/').oneOrMoreTimes;
-const rxNamedExpression = rx4d
-  .group(rx4d.value('import').or.value('export'))
-  .zeroOrOneTime
-  .group(rx4d.whiteSpace.oneOrMoreTimes)
-  .zeroOrOneTime
-  .group(rx4d.escape.value('{'))
-  .group(rx4d.whiteSpace.zeroOrMoreTimes)
-  .group(rx4d.varchar.zeroOrMoreTimes.notCharset(rx4d.whiteSpace))
-  .group(rx4d.whiteSpace.zeroOrMoreTimes)
-  .group(rx4d.escape.value('}'))
-  .group(rx4d.whiteSpace.oneOrMoreTimes)
+const rxPath = match.charset('@$0-9a-zA-Z_\\s-.\\/').oneOrMoreTimes;
+const rxNamedExpression = match
+  .group(match.value('import').or.value('export')).zeroOrOneTime
+  .group(match.whiteSpace.oneOrMoreTimes).zeroOrOneTime
+  .group(match.escape.value('{'))
+  .group(match.whiteSpace.zeroOrMoreTimes)
+  .group(match.charset('$\\w\\s').zeroOrMoreTimes.notCharset(match.whiteSpace))
+  .group(match.whiteSpace.zeroOrMoreTimes)
+  .group(match.escape.value('}'))
+  .group(match.whiteSpace.oneOrMoreTimes)
   .group('from')
-  .group(rx4d.whiteSpace.oneOrMoreTimes)
-  .group(rx4d.charset('\'"`'))
+  .group(match.whiteSpace.oneOrMoreTimes)
+  .group(match.charset('\'"`'))
   .group(rxPath)
-  .group(rx4d.charset('\'"`'))
-  .zeroOrOneTime
+  .group(match.charset('\'"`')).zeroOrOneTime
 ;
 
 console.log(rxNamedExpression());
-// ==> (import|export)
-// ... ?
-// ... (\s+)
-// ... ?
+// ==> (import|export)?
+// ... (\s+)?
 // ... (\{)
 // ... (\s*)
 // ... ([$0-9A-Za-z_\s]*[^\s])
@@ -42,12 +37,11 @@ console.log(rxNamedExpression());
 // ... (\s+)
 // ... (['"`])
 // ... ([@$0-9a-zA-Z_\s-.\/]+)
-// ... (['"`])
-// ... ?
+// ... (['"`])?
 
 const reNamedExpression = rxNamedExpression.flags('gm')();
-"import { pattern as PATTERN } from './foo/bar';".match(reNamedExpression);
-"export { regexp as REGULAR_EXPRESSION } from './foo/bar'".match(reNamedExpression);
+reNamedExpression.exec("import { pattern as PATTERN } from './foo/bar';");
+reNamedExpression.exec("export { regexp as REGULAR_EXPRESSION } from './foo/bar'");
 ```
 
 ## Compositions:
@@ -100,4 +94,19 @@ atMost(value)
 group(value)
 range(min, max)
 flags(value)
+```
+
+## Create your own rules
+
+```js
+const { rules } = require('rx4d');
+
+const customRules = {
+  upercaseVowel: '[AEIOUY]',
+  lowercaseVowel: '[aeiouy]',
+  uppercaseConsonant: '[B-DF-HJ-NP-TV-Z]',
+  lowercaseConsonant: '[b-df-hj-np-tv-z]'
+};
+
+module.exports = rules(customRules, overrideRules?: Object);
 ```

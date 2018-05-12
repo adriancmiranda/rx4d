@@ -6,19 +6,19 @@
  *    '._  W    ,--'   
  *       |_:_._/         
  *                       
- * ~~~~~~~~~~ rx4d v1.0.3
+ * ~~~~~~~~~~ rx4d v1.1.0
  * 
- * @commit 5f9f1bc8e53a407e1a1106b7b2ab3dec4c6e401d
- * @moment Thursday, May 10, 2018 8:07 AM
+ * @commit cdb8d14a783b914471ef0d58b58efb017972788d
+ * @moment Saturday, May 12, 2018 8:34 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.objectChain = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.objectChain = {})));
+}(this, (function (exports) { 'use strict';
 
 	/**
 	 *
@@ -163,61 +163,62 @@
 		return value.replace(reEscapeRegExp, '\\$&');
 	};
 
+	var compositions = {
+		beginningOfInput: '^',
+		endOfInput: '$',
+		anySingleCharExceptTheNewline: '.',
+		zeroOrMoreTimes: '*',
+		oneOrMoreTimes: '+',
+		zeroOrOneTime: '?',
+		or: '|',
+		escape: '\\',
+		backslash: '\\',
+		backspace: '\\b',
+		nonWordBoundary: '\\B',
+		digit: '\\d',
+		nonDigitChar: '\\D',
+		formFeed: '\\f',
+		lineFeed: '\\n',
+		carriageReturn: '\\r',
+		whiteSpace: '\\s',
+		tab: '\\t',
+		verticalTab: '\\v',
+		alphanumeric: '\\w',
+		nonWordChar: '\\W',
+		nil: '\\0',
+		lowercase: '[a-z]',
+		uppercase: '[A-Z]',
+		letter: '[a-zA-Z]',
+		numeric: '[0-9]',
+		varchar: '[a-zA-Z_$][0-9a-zA-Z_$]',
+		eol: '(?:(?:\\n)|(?:\\r\\n))',
+		quote: escapeRegExp,
+		repeat: function (self) { return self; },
+		value: function (self, value) { return value; },
+		controlChar: function (self, value) { return ("\\c" + value); },
+		notRemember: function (self, value) { return ("(?:" + value + ")"); },
+		ifFollowedBy: function (self, value) { return ("(?=" + value + ")"); },
+		ifNotFollowedBy: function (self, value) { return ("(?!" + value + ")"); },
+		notCharset: function (self, value) { return ("[^" + value + "]"); },
+		charset: function (self, value) { return ("[" + value + "]"); },
+		size: function (self, value) { return ("{" + (0 | value) + "}"); },
+		atLeast: function (self, value) { return ("{" + (0 | value) + ",}"); },
+		atMost: function (self, value) { return ("{," + (0 | value) + "}"); },
+		group: function (self, value) { return ("(" + value + ")"); },
+		range: function (self, min, max) { return ("{" + (0 | min) + "," + (0 | max) + "}"); },
+		flags: function (self, value) { return new RegExp(self, value); },
+	};
+
 	var assign = Object.assign;
-	var rx4d = function (customRules) { return (
-		transform(assign({}, customRules, {
-			beginningOfInput: '^',
-			endOfInput: '$',
-			anySingleCharExceptTheNewline: '.',
-			zeroOrMoreTimes: '*',
-			oneOrMoreTimes: '+',
-			zeroOrOneTime: '?',
-			or: '|',
-			escape: '\\',
-			backslash: '\\',
-			backspace: '\\b',
-			nonWordBoundary: '\\B',
-			digit: '\\d',
-			nonDigitChar: '\\D',
-			formFeed: '\\f',
-			lineFeed: '\\n',
-			carriageReturn: '\\r',
-			whiteSpace: '\\s',
-			tab: '\\t',
-			verticalTab: '\\v',
-			alphanumeric: '\\w',
-			nonWordChar: '\\W',
-			nil: '\\0',
-			upercaseVowel: '[AEIOU]',
-			lowercaseVowel: '[aeiou]',
-			uppercaseConsonant: '[B-DF-HJ-NP-TV-Z]',
-			lowercaseConsonant: '[b-df-hj-np-tv-z]',
-			lowercase: '[a-z]',
-			uppercase: '[A-Z]',
-			letter: '[a-zA-Z]',
-			numeric: '[0-9]',
-			varchar: '[$0-9A-Za-z_\\s]',
-			eol: '(?:(?:\\n)|(?:\\r\\n))',
-			quote: escapeRegExp,
-			repeat: function (self) { return self; },
-			value: function (self, value) { return value; },
-			controlChar: function (self, value) { return ("\\c" + value); },
-			notRemember: function (self, value) { return ("(?:" + value + ")"); },
-			ifFollowedBy: function (self, value) { return ("(?=" + value + ")"); },
-			ifNotFollowedBy: function (self, value) { return ("(?!" + value + ")"); },
-			notCharset: function (self, value) { return ("[^" + value + "]"); },
-			charset: function (self, value) { return ("[" + value + "]"); },
-			size: function (self, value) { return ("{" + (0 | value) + "}"); },
-			atLeast: function (self, value) { return ("{" + (0 | value) + ",}"); },
-			atMost: function (self, value) { return ("{," + (0 | value) + "}"); },
-			group: function (self, value) { return ("(" + value + ")"); },
-			range: function (self, min, max) { return ("{" + (0 | min) + "," + (0 | max) + "}"); },
-			flags: function (self, value) { return new RegExp(self, value); },
-		}))
-	); };
+	var match = transform(compositions);
+	var rules = function (custom, override) {
+		if (custom === undefined || custom === null) { return match; }
+		return transform(assign({}, custom, compositions, override));
+	};
 
-	var index_next = rx4d();
+	exports.rules = rules;
+	exports.match = match;
 
-	return index_next;
+	Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
