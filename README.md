@@ -8,37 +8,53 @@
 const { match } = require('rx4d');
 
 const rxPath = match
+
 // ([@$0-9a-zA-Z_\s-.\/]+)
 .charset('@$0-9a-zA-Z_\\s-.\\/').oneOrMoreTimes
+
 ;
 
 const rxNamedExpression = match
+
 // (import|export)?
 .group(match.value('import').or.value('export')).zeroOrOneTime
+
 // (\s+)?
 .group(match.whiteSpace.oneOrMoreTimes).zeroOrOneTime
+
 // (\{)
 .group(match.escape.value('{'))
+
 // (\s*)
 .group(match.whiteSpace.zeroOrMoreTimes)
+
 // ([$\\w\\s]*[^\s])
 .group(match.charset('$\\w\\s').zeroOrMoreTimes.notCharset(match.whiteSpace))
+
 // (\s*)
 .group(match.whiteSpace.zeroOrMoreTimes)
+
 // (\})
 .group(match.escape.value('}'))
+
 // (\s+)
 .group(match.whiteSpace.oneOrMoreTimes)
+
 // (from)
 .group('from')
+
 // (\s+)
 .group(match.whiteSpace.oneOrMoreTimes)
+
 // (['"`])
 .group(match.charset('\'"`'))
+
 // ([@$0-9a-zA-Z_\s-.\/]+)
 .group(rxPath)
+
 // (['"`])?
 .group(match.charset('\'"`')).zeroOrOneTime
+
 ;
 
 console.log(rxNamedExpression());
@@ -140,3 +156,5 @@ const customRules = {
 const overrideRules = undefined; // optional object
 module.exports = rules(customRules, overrideRules);
 ```
+
+<!-- helpful links -->
