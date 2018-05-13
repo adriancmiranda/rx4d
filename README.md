@@ -149,8 +149,6 @@ const customRules = {
   lowercaseVowel: '[aeiouy]',
   uppercaseConsonant: '[B-DF-HJ-NP-TV-Z]',
   lowercaseConsonant: '[b-df-hj-np-tv-z]',
-  something: '(?:.+)',
-  anything: '(?:.*)',
 };
 
 const overrideRules = undefined; // optional object
