@@ -50,7 +50,11 @@ reNamedExpression.exec("export { regexp as REGULAR_EXPRESSION } from './foo/bar'
 beginningOfInput: '^'
 endOfInput: '$'
 anySingleCharExceptTheNewline: '.'
-anySingleChar: '[\s\S]'
+anySingleChar: '[\\s\\S]'
+somethingExceptTheNewline: '(?:.+)'
+something: '(?:[\\s\\S]+)'
+anythingExceptTheNewline: '(?:.*)'
+anything: '(?:[\\s\\S]*)'
 zeroOrMoreTimes: '*'
 oneOrMoreTimes: '+'
 zeroOrOneTime: '?'
@@ -81,12 +85,11 @@ numeric: '[0-9]'
 varchar: '[a-zA-Z_$][0-9a-zA-Z_$]'
 eol: '(?:(?:\\n)|(?:\\r\\n))'
 startCapture: '('
-startGroup: '('
 endCapture: ')'
+startGroup: '('
 endGroup: ')'
 startCharset: '['
 endCharset: ']'
-repeat(times)
 quote(value)
 value(value)
 unicode(value)
@@ -95,6 +98,8 @@ notRemember(value)
 then(value)
 find(value)
 maybe(value)
+anythingBut(value)
+somethingBut(value)
 ifFollowedBy(value)
 ifNotFollowedBy(value)
 notCharset(value)
@@ -106,7 +111,9 @@ atLeast(value)
 atMost(value)
 group(value)
 range(min, max)
+repeat(times)
 replace(pattern, replacement)
+either(...rest)
 flags(value)
 ```
 

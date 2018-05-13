@@ -13,6 +13,10 @@ const compositions = {
 	endOfInput: '$',
 	anySingleCharExceptTheNewline: '.',
 	anySingleChar: '[\\s\\S]',
+	somethingExceptTheNewline: '(?:.+)',
+	something: '(?:[\\s\\S]+)',
+	anythingExceptTheNewline: '(?:.*)',
+	anything: '(?:[\\s\\S]*)',
 	zeroOrMoreTimes: '*',
 	oneOrMoreTimes: '+',
 	zeroOrOneTime: '?',
@@ -48,7 +52,6 @@ const compositions = {
 	endGroup: ')',
 	startCharset: '[',
 	endCharset: ']',
-	repeat: (self, last, times) => `${self}${new Array((0 | times) + 1).join(last)}`,
 	quote: (self, last, value) => `${self}${escapeRegExp(value)}`,
 	value: (self, last, value) => `${self}${value}`,
 	unicode: (self, last, value) => `${self}\\u${value}`,
@@ -57,6 +60,8 @@ const compositions = {
 	then: (self, last, value) => `${self}(?:${value})`,
 	find: (self, last, value) => `${self}(?:${value})`,
 	maybe: (self, last, value) => `${self}(?:${value})?`,
+	anythingBut: (self, last, value) => `${self}(?:[^${value}]*)`,
+	somethingBut: (self, last, value) => `${self}(?:[^${value}]+)`,
 	ifFollowedBy: (self, last, value) => `${self}(?=${value})`,
 	ifNotFollowedBy: (self, last, value) => `${self}(?!${value})`,
 	notCharset: (self, last, value) => `${self}[^${value}]`,
@@ -68,8 +73,10 @@ const compositions = {
 	atMost: (self, last, value) => `${self}{,${0 | value}}`,
 	group: (self, last, value) => `${self}(${value})`,
 	range: (self, last, min, max) => `${self}{${0 | min},${0 | max}}`,
+	repeat: (self, last, times) => `${self}${new Array((0 | times) + 1).join(last)}`,
 	replace: (self, last, pattern, replacement) => self.replace(pattern, replacement),
 	flags: (self, last, value) => new RegExp(self, value),
+	either: (self, last, ...rest) => `${self}${rest.join('|')}`,
 };
 
 const { assign } = Object;

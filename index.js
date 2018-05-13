@@ -1,15 +1,15 @@
 /*!
- *    /     '      /  / 
- *   /__      ___ (  /   
- *   \--`-'-|`---\ |  
- *    |' _/   ` __/ /   
- *    '._  W    ,--'   
- *       |_:_._/         
- *                       
- * ~~~~~~~~~~ rx4d v1.2.0
- * 
- * @commit f9b379f1b9e6e71e58dcfae3103cf1dc758ef336
- * @moment Sunday, May 13, 2018 12:25 AM
+ *    /     '      /  /
+ *   /__      ___ (  /
+ *   \--`-'-|`---\ |
+ *    |' _/   ` __/ /
+ *    '._  W    ,--'
+ *       |_:_._/
+ *
+ * ~~~~~~~~~~ rx4d v1.2.1
+ *
+ * @commit 591485ca5abd3b688cdb8a77b1de62af43038595
+ * @moment Sunday, May 13, 2018 2:11 AM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -111,13 +111,12 @@
 
 	var transform = function (object, middleware) {
 		function chain() {
-			var this$1 = this;
-
+			var ctx = this;
 			var last = '';
 			var pattern = this.object.reduce(function (acc, item) {
 				if (callable(object[item.name])) {
 					var args = processArgs(item.args, [acc, last]);
-					acc = apply(object[item.name], this$1, args);
+					acc = apply(object[item.name], ctx, args);
 					last = acc;
 				} else {
 					acc += object[item.name];
@@ -137,7 +136,6 @@
 
 		var descriptors = keys(object).reduce(function (acc, name) {
 			var obj;
-
 			var isfn = callable(object[name]);
 			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
 					return connect(this.object.concat({ name: name, args: arguments }));
@@ -148,7 +146,6 @@
 		var proto = defineProperties(function ObjectChain() {}, descriptors);
 		return defineProperties({ object: object }, keys(descriptors).reduce(function (acc, name) {
 			var obj;
-
 			var isfn = callable(object[name]);
 			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
 					return connect([{ name: name, args: arguments }]);
@@ -169,6 +166,10 @@
 		endOfInput: '$',
 		anySingleCharExceptTheNewline: '.',
 		anySingleChar: '[\\s\\S]',
+		somethingExceptTheNewline: '(?:.+)',
+		something: '(?:[\\s\\S]+)',
+		anythingExceptTheNewline: '(?:.*)',
+		anything: '(?:[\\s\\S]*)',
 		zeroOrMoreTimes: '*',
 		oneOrMoreTimes: '+',
 		zeroOrOneTime: '?',
@@ -204,7 +205,6 @@
 		endGroup: ')',
 		startCharset: '[',
 		endCharset: ']',
-		repeat: function (self, last, times) { return ("" + self + (new Array((0 | times) + 1).join(last))); },
 		quote: function (self, last, value) { return ("" + self + (escapeRegExp(value))); },
 		value: function (self, last, value) { return ("" + self + value); },
 		unicode: function (self, last, value) { return (self + "\\u" + value); },
@@ -213,6 +213,8 @@
 		then: function (self, last, value) { return (self + "(?:" + value + ")"); },
 		find: function (self, last, value) { return (self + "(?:" + value + ")"); },
 		maybe: function (self, last, value) { return (self + "(?:" + value + ")?"); },
+		anythingBut: function (self, last, value) { return (self + "(?:[^" + value + "]*)"); },
+		somethingBut: function (self, last, value) { return (self + "(?:[^" + value + "]+)"); },
 		ifFollowedBy: function (self, last, value) { return (self + "(?=" + value + ")"); },
 		ifNotFollowedBy: function (self, last, value) { return (self + "(?!" + value + ")"); },
 		notCharset: function (self, last, value) { return (self + "[^" + value + "]"); },
@@ -224,8 +226,14 @@
 		atMost: function (self, last, value) { return (self + "{," + (0 | value) + "}"); },
 		group: function (self, last, value) { return (self + "(" + value + ")"); },
 		range: function (self, last, min, max) { return (self + "{" + (0 | min) + "," + (0 | max) + "}"); },
+		repeat: function (self, last, times) { return ("" + self + (new Array((0 | times) + 1).join(last))); },
 		replace: function (self, last, pattern, replacement) { return self.replace(pattern, replacement); },
 		flags: function (self, last, value) { return new RegExp(self, value); },
+		either: function (self, last) {
+			var rest = [], len = arguments.length - 2;
+			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
+			return ("" + self + (rest.join('|')));
+		},
 	};
 
 	var assign = Object.assign;
