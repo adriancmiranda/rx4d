@@ -1,6 +1,6 @@
 {
   "name": "rx4d",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Adrian C. Miranda",
   "description": "RegExp 4 dummies",
   "main": "index.js",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "describe-type": "0.7.0",
-    "object-chain": "1.0.3"
+    "object-chain": "1.0.4"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.46",
@@ -45,7 +45,7 @@
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
-    "eslint-plugin-react": "7.7.0",
+    "eslint-plugin-react": "7.8.1",
     "git-revision-webpack-plugin": "3.0.3",
     "husky": "0.14.3",
     "moment": "2.22.1",

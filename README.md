@@ -94,6 +94,7 @@ atLeast(value)
 atMost(value)
 group(value)
 range(min, max)
+replace(pattern, replacement)
 flags(value)
 ```
 
