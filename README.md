@@ -9,7 +9,7 @@ const { match } = require('rx4d');
 
 const rxPath = match
 
-// ([@$0-9a-zA-Z_\s-.\/]+)
+// [@$0-9a-zA-Z_\s-.\/]+
 .charset('@$0-9a-zA-Z_\\s-.\\/').oneOrMoreTimes
 
 ;
