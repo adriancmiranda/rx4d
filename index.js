@@ -8,8 +8,8 @@
  *
  * ~~~~~~~~~~ rx4d v1.2.1
  *
- * @commit 591485ca5abd3b688cdb8a77b1de62af43038595
- * @moment Sunday, May 13, 2018 2:11 AM
+ * @commit 858c88248b867b9dc2c53de3ee60a96f40f7b71c
+ * @moment Sunday, May 13, 2018 2:25 AM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -137,9 +137,9 @@
 		var descriptors = keys(object).reduce(function (acc, name) {
 			var obj;
 			var isfn = callable(object[name]);
-			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
+			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
 					return connect(this.object.concat({ name: name, args: arguments }));
-				}, obj );
+				}, obj);
 			return acc;
 		}, create(null));
 
@@ -147,9 +147,9 @@
 		return defineProperties({ object: object }, keys(descriptors).reduce(function (acc, name) {
 			var obj;
 			var isfn = callable(object[name]);
-			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
+			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
 					return connect([{ name: name, args: arguments }]);
-				}, obj );
+				}, obj);
 			return acc;
 		}, create(null)));
 	};
@@ -212,7 +212,8 @@
 		notRemember: function (self, last, value) { return (self + "(?:" + value + ")"); },
 		then: function (self, last, value) { return (self + "(?:" + value + ")"); },
 		find: function (self, last, value) { return (self + "(?:" + value + ")"); },
-		maybe: function (self, last, value) { return (self + "(?:" + value + ")?"); },
+		maybe: function (self, last, value) { return (self + "(?:" + value + ")*"); },
+		maybeOne: function (self, last, value) { return (self + "(?:" + value + ")?"); },
 		anythingBut: function (self, last, value) { return (self + "(?:[^" + value + "]*)"); },
 		somethingBut: function (self, last, value) { return (self + "(?:[^" + value + "]+)"); },
 		ifFollowedBy: function (self, last, value) { return (self + "(?=" + value + ")"); },
@@ -231,7 +232,7 @@
 		flags: function (self, last, value) { return new RegExp(self, value); },
 		either: function (self, last) {
 			var rest = [], len = arguments.length - 2;
-			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
+			while (len-- > 0) rest[len] = arguments[len + 2];
 			return ("" + self + (rest.join('|')));
 		},
 	};
@@ -247,5 +248,4 @@
 	exports.match = match;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
-
 })));
