@@ -151,7 +151,7 @@ const customRules = {
   lowercaseConsonant: '[b-df-hj-np-tv-z]',
 };
 
-const overrideRules = undefined; // optional object
+const overrideRules = undefined; // optional object to override compositions
 module.exports = rules(customRules, overrideRules);
 ```
 
