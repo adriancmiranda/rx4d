@@ -8,8 +8,8 @@
  *                       
  * ~~~~~~~~~~ rx4d v1.1.0
  * 
- * @commit cdb8d14a783b914471ef0d58b58efb017972788d
- * @moment Saturday, May 12, 2018 8:34 PM
+ * @commit a7c98465d72d451c66729748e78ccb9cfa37fa0f
+ * @moment Saturday, May 12, 2018 9:25 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -173,18 +173,22 @@
 		or: '|',
 		escape: '\\',
 		backslash: '\\',
-		backspace: '\\b',
+		backspace: '[\\b]',
+		wordBoundary: '\\b',
 		nonWordBoundary: '\\B',
 		digit: '\\d',
-		nonDigitChar: '\\D',
+		nonDigit: '\\D',
 		formFeed: '\\f',
 		lineFeed: '\\n',
 		carriageReturn: '\\r',
 		whiteSpace: '\\s',
+		notWhiteSpace: '\\S',
 		tab: '\\t',
 		verticalTab: '\\v',
 		alphanumeric: '\\w',
-		nonWordChar: '\\W',
+		alphanumerical: '\\w',
+		nonWord: '\\W',
+		nul: '\\0',
 		nil: '\\0',
 		lowercase: '[a-z]',
 		uppercase: '[A-Z]',
@@ -195,7 +199,8 @@
 		quote: escapeRegExp,
 		repeat: function (self) { return self; },
 		value: function (self, value) { return value; },
-		controlChar: function (self, value) { return ("\\c" + value); },
+		unicode: function (self, value) { return ("\\u" + value); },
+		control: function (self, value) { return ("\\c" + value); },
 		notRemember: function (self, value) { return ("(?:" + value + ")"); },
 		ifFollowedBy: function (self, value) { return ("(?=" + value + ")"); },
 		ifNotFollowedBy: function (self, value) { return ("(?!" + value + ")"); },
