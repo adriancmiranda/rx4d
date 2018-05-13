@@ -47,48 +47,60 @@ reNamedExpression.exec("export { regexp as REGULAR_EXPRESSION } from './foo/bar'
 ## Compositions:
 
 ```js
-beginningOfInput: ^
-endOfInput: $
-anySingleCharExceptTheNewline: .
-zeroOrMoreTimes: *
-oneOrMoreTimes: +
-zeroOrOneTime: ?
-or: |
-escape: \
-backslash: \
-backspace: [\b]
-wordBoundary: \b
-nonWordBoundary: \B
-digit: \d
-nonDigit: \D
-formFeed: \f
-lineFeed: \n
-carriageReturn: \r
-whiteSpace: \s
-notWhiteSpace: \S
-tab: \t
-verticalTab: \v
-alphanumeric: \w
-alphanumerical: \w
-nonWordChar: \W
-nul: \0
-nil: \0
-lowercase: [a-z]
-uppercase: [A-Z]
-letter: [a-zA-Z]
-numeric: [0-9]
-varchar: [a-zA-Z_$][0-9a-zA-Z_$]
-eol: (?:(?:\n)|(?:\r\n))
-repeat()
+beginningOfInput: '^'
+endOfInput: '$'
+anySingleCharExceptTheNewline: '.'
+anySingleChar: '[\s\S]'
+zeroOrMoreTimes: '*'
+oneOrMoreTimes: '+'
+zeroOrOneTime: '?'
+or: '|'
+escape: '\\'
+backslash: '\\'
+backspace: '[\\b]'
+wordBoundary: '\\b'
+nonWordBoundary: '\\B'
+digit: '\\d'
+nonDigit: '\\D'
+formFeed: '\\f'
+lineFeed: '\\n'
+carriageReturn: '\\r'
+whiteSpace: '\\s'
+notWhiteSpace: '\\S'
+tab: '\\t'
+verticalTab: '\\v'
+alphanumeric: '\\w'
+alphanumerical: '\\w'
+nonWord: '\\W'
+nul: '\\0'
+nil: '\\0'
+lowercase: '[a-z]'
+uppercase: '[A-Z]'
+letter: '[a-zA-Z]'
+numeric: '[0-9]'
+varchar: '[a-zA-Z_$][0-9a-zA-Z_$]'
+eol: '(?:(?:\\n)|(?:\\r\\n))'
+startCapture: '('
+startGroup: '('
+endCapture: ')'
+endGroup: ')'
+startCharset: '['
+endCharset: ']'
+repeat(times)
 quote(value)
 value(value)
 unicode(value)
 control(value)
 notRemember(value)
+then(value)
+find(value)
+maybe(value)
 ifFollowedBy(value)
 ifNotFollowedBy(value)
 notCharset(value)
 charset(value)
+any(value)
+anyOf(value)
 size(value)
 atLeast(value)
 atMost(value)
@@ -112,5 +124,6 @@ const customRules = {
   anything: '(?:.*)',
 };
 
-module.exports = rules(customRules, overrideRules?: Object);
+const overrideRules = undefined; // optional object
+module.exports = rules(customRules, overrideRules);
 ```

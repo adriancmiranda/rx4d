@@ -6,10 +6,10 @@
  *    '._  W    ,--'   
  *       |_:_._/         
  *                       
- * ~~~~~~~~~~ rx4d v1.1.1
+ * ~~~~~~~~~~ rx4d v1.2.0
  * 
- * @commit 12250e326a3def0585e81d9db53f40fd0398355f
- * @moment Saturday, May 12, 2018 10:04 PM
+ * @commit f9b379f1b9e6e71e58dcfae3103cf1dc758ef336
+ * @moment Sunday, May 13, 2018 12:25 AM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -113,15 +113,18 @@
 		function chain() {
 			var this$1 = this;
 
+			var last = '';
 			var pattern = this.object.reduce(function (acc, item) {
 				if (callable(object[item.name])) {
-					var args = processArgs(item.args, [acc]);
+					var args = processArgs(item.args, [acc, last]);
 					acc = apply(object[item.name], this$1, args);
+					last = acc;
 				} else {
 					acc += object[item.name];
+					last = object[item.name];
 				}
 				return acc;
-			}, '');
+			}, last);
 			return middleware ? apply(middleware, this, [pattern, arguments], true) : pattern;
 		}
 
@@ -155,7 +158,7 @@
 	};
 
 	var reEscapeRegExp = /[-[\]{}()*+?.,\\^$|#\s]/g;
-	var escapeRegExp = function (self, value) {
+	var escapeRegExp = function (value) {
 		value = string(value) ? value : '';
 		reEscapeRegExp.lastIndex = 0;
 		return value.replace(reEscapeRegExp, '\\$&');
@@ -165,6 +168,7 @@
 		beginningOfInput: '^',
 		endOfInput: '$',
 		anySingleCharExceptTheNewline: '.',
+		anySingleChar: '[\\s\\S]',
 		zeroOrMoreTimes: '*',
 		oneOrMoreTimes: '+',
 		zeroOrOneTime: '?',
@@ -194,30 +198,41 @@
 		numeric: '[0-9]',
 		varchar: '[a-zA-Z_$][0-9a-zA-Z_$]',
 		eol: '(?:(?:\\n)|(?:\\r\\n))',
-		quote: escapeRegExp,
-		repeat: function (self) { return ("" + self); },
-		value: function (self, value) { return ("" + self + value); },
-		unicode: function (self, value) { return (self + "\\u" + value); },
-		control: function (self, value) { return (self + "\\c" + value); },
-		notRemember: function (self, value) { return (self + "(?:" + value + ")"); },
-		ifFollowedBy: function (self, value) { return (self + "(?=" + value + ")"); },
-		ifNotFollowedBy: function (self, value) { return (self + "(?!" + value + ")"); },
-		notCharset: function (self, value) { return (self + "[^" + value + "]"); },
-		charset: function (self, value) { return (self + "[" + value + "]"); },
-		size: function (self, value) { return (self + "{" + (0 | value) + "}"); },
-		atLeast: function (self, value) { return (self + "{" + (0 | value) + ",}"); },
-		atMost: function (self, value) { return (self + "{," + (0 | value) + "}"); },
-		group: function (self, value) { return (self + "(" + value + ")"); },
-		range: function (self, min, max) { return (self + "{" + (0 | min) + "," + (0 | max) + "}"); },
-		replace: function (self, pattern, replacement) { return self.replace(pattern, replacement); },
-		flags: function (self, value) { return new RegExp(self, value); },
+		startCapture: '(',
+		endCapture: ')',
+		startGroup: '(',
+		endGroup: ')',
+		startCharset: '[',
+		endCharset: ']',
+		repeat: function (self, last, times) { return ("" + self + (new Array((0 | times) + 1).join(last))); },
+		quote: function (self, last, value) { return ("" + self + (escapeRegExp(value))); },
+		value: function (self, last, value) { return ("" + self + value); },
+		unicode: function (self, last, value) { return (self + "\\u" + value); },
+		control: function (self, last, value) { return (self + "\\c" + value); },
+		notRemember: function (self, last, value) { return (self + "(?:" + value + ")"); },
+		then: function (self, last, value) { return (self + "(?:" + value + ")"); },
+		find: function (self, last, value) { return (self + "(?:" + value + ")"); },
+		maybe: function (self, last, value) { return (self + "(?:" + value + ")?"); },
+		ifFollowedBy: function (self, last, value) { return (self + "(?=" + value + ")"); },
+		ifNotFollowedBy: function (self, last, value) { return (self + "(?!" + value + ")"); },
+		notCharset: function (self, last, value) { return (self + "[^" + value + "]"); },
+		charset: function (self, last, value) { return (self + "[" + value + "]"); },
+		any: function (self, last, value) { return (self + "[" + value + "]"); },
+		anyOf: function (self, last, value) { return (self + "[" + value + "]"); },
+		size: function (self, last, value) { return (self + "{" + (0 | value) + "}"); },
+		atLeast: function (self, last, value) { return (self + "{" + (0 | value) + ",}"); },
+		atMost: function (self, last, value) { return (self + "{," + (0 | value) + "}"); },
+		group: function (self, last, value) { return (self + "(" + value + ")"); },
+		range: function (self, last, min, max) { return (self + "{" + (0 | min) + "," + (0 | max) + "}"); },
+		replace: function (self, last, pattern, replacement) { return self.replace(pattern, replacement); },
+		flags: function (self, last, value) { return new RegExp(self, value); },
 	};
 
 	var assign = Object.assign;
 	var match = transform(compositions);
-	var rules = function (custom, override) {
+	var rules = function (custom, override, middleware) {
 		if (custom === undefined || custom === null) { return match; }
-		return transform(assign({}, custom, compositions, override));
+		return transform(assign({}, custom, compositions, override), middleware);
 	};
 
 	exports.rules = rules;
