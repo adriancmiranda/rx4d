@@ -156,3 +156,7 @@ module.exports = rules(customRules, overrideRules);
 ```
 
 <!-- helpful links -->
+
+[regexp tool]: http://www.gethifi.com/tools/regex
+[Unicode range RegExp generator]: https://apps.timwhitlock.info/js/regex
+[documentation]: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/regexp
