@@ -68,6 +68,7 @@ const compositions = {
 	endCharset: ']',
 	quote: (self, last, input) => `${self}${val(input)}`,
 	value: (self, last, input) => `${self}${src(input)}`,
+	plus: (self, last, input) => `${self}${src(input)}`,
 	unicode: (self, last, input) => `${self}\\u${input}`,
 	control: (self, last, input) => `${self}\\c${input}`,
 	notRemember: (self, last, input) => `${self}(?:${src(input)})`,

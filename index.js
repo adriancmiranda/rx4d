@@ -6,10 +6,10 @@
  *    '._  W    ,--'
  *       |_:_._/
  *
- * ~~~~~~~~~~ rx4d v1.2.2
+ * ~~~~~~~~~~ rx4d v1.2.3
  *
- * @commit 6413b7690ef8a5a5a76a00b1c3d7926f6f29e8a1
- * @moment Tuesday, May 15, 2018 7:32 AM
+ * @commit 7fa7b6ddfc6be3ece8d5a45734c0199b9e1beda0
+ * @moment Tuesday, May 15, 2018 8:36 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -231,6 +231,7 @@
 		endCharset: ']',
 		quote: function (self, last, input) { return ('' + self + (val(input))); },
 		value: function (self, last, input) { return ('' + self + (src(input))); },
+		plus: function (self, last, input) { return ('' + self + (src(input))); },
 		unicode: function (self, last, input) { return (self + '\\u' + input); },
 		control: function (self, last, input) { return (self + '\\c' + input); },
 		notRemember: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
@@ -256,7 +257,7 @@
 		flags: function (self, last, input) { return new RegExp(self, input); },
 		either: function (self, last) {
 			var rest = [], len = arguments.length - 2;
-			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
+			while (len-- > 0) rest[len] = arguments[len + 2];
 			return ('' + self + (rest.join('|')));
 		},
 	};
@@ -274,5 +275,4 @@
 	exports.val = val;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
-
 })));

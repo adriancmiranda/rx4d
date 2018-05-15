@@ -113,6 +113,7 @@ startCharset: '['
 endCharset: ']'
 quote(value)
 value(value)
+plus(value)
 unicode(value)
 control(value)
 notRemember(value)
