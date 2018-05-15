@@ -142,9 +142,12 @@ flags(value)
 ## Create your own rules
 
 ```js
-const { rules } = require('rx4d');
+const { match, rules } = require('rx4d');
+
+const ifNotFollowedByComment = match.ifNotFollowedBy(match.quote('//').or.quote('/*'))();
 
 const customRules = {
+  ifNotFollowedByComment,
   upercaseVowel: '[AEIOUY]',
   lowercaseVowel: '[aeiouy]',
   uppercaseConsonant: '[B-DF-HJ-NP-TV-Z]',

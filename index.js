@@ -6,10 +6,10 @@
  *    '._  W    ,--'
  *       |_:_._/
  *
- * ~~~~~~~~~~ rx4d v1.2.1
+ * ~~~~~~~~~~ rx4d v1.2.2
  *
- * @commit 858c88248b867b9dc2c53de3ee60a96f40f7b71c
- * @moment Sunday, May 13, 2018 2:25 AM
+ * @commit 6413b7690ef8a5a5a76a00b1c3d7926f6f29e8a1
+ * @moment Tuesday, May 15, 2018 7:32 AM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -19,6 +19,17 @@
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
 	(factory((global.objectChain = {})));
 }(this, (function (exports) { 'use strict';
+
+	/**
+	 *
+	 * @function
+	 * @memberof is
+	 * @param {any} value
+	 * @returns {Boolean}
+	 */
+	function number(value) {
+		return typeof value === 'number' || value instanceof Number;
+	}
 
 	/**
 	 *
@@ -138,8 +149,8 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
-					return connect(this.object.concat({ name: name, args: arguments }));
-				}, obj);
+				return connect(this.object.concat({ name: name, args: arguments }));
+			}, obj);
 			return acc;
 		}, create(null));
 
@@ -148,17 +159,30 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
-					return connect([{ name: name, args: arguments }]);
-				}, obj);
+				return connect([{ name: name, args: arguments }]);
+			}, obj);
 			return acc;
 		}, create(null)));
 	};
 
-	var reEscapeRegExp = /[-[\]{}()*+?.,\\^$|#\s]/g;
-	var escapeRegExp = function (value) {
-		value = string(value) ? value : '';
+	var reEscapeRegExp = /[-[/\]{}()*+?.,\\^$|#\s]/g;
+
+	var escapeRegExp = function (input) {
+		input = string(input) ? input : '';
 		reEscapeRegExp.lastIndex = 0;
-		return value.replace(reEscapeRegExp, '\\$&');
+		return input.replace(reEscapeRegExp, '\\$&');
+	};
+
+	var src = function (input) {
+		if (input === undefined) { return 'undefined'; }
+		if (input === null) { return 'null'; }
+		if (input.source) { return src(input.source); }
+		return input;
+	};
+
+	var val = function (input) {
+		input = src(input);
+		return number(input) ? input : escapeRegExp(input);
 	};
 
 	var compositions = {
@@ -205,35 +229,35 @@
 		endGroup: ')',
 		startCharset: '[',
 		endCharset: ']',
-		quote: function (self, last, value) { return ("" + self + (escapeRegExp(value))); },
-		value: function (self, last, value) { return ("" + self + value); },
-		unicode: function (self, last, value) { return (self + "\\u" + value); },
-		control: function (self, last, value) { return (self + "\\c" + value); },
-		notRemember: function (self, last, value) { return (self + "(?:" + value + ")"); },
-		then: function (self, last, value) { return (self + "(?:" + value + ")"); },
-		find: function (self, last, value) { return (self + "(?:" + value + ")"); },
-		maybe: function (self, last, value) { return (self + "(?:" + value + ")*"); },
-		maybeOne: function (self, last, value) { return (self + "(?:" + value + ")?"); },
-		anythingBut: function (self, last, value) { return (self + "(?:[^" + value + "]*)"); },
-		somethingBut: function (self, last, value) { return (self + "(?:[^" + value + "]+)"); },
-		ifFollowedBy: function (self, last, value) { return (self + "(?=" + value + ")"); },
-		ifNotFollowedBy: function (self, last, value) { return (self + "(?!" + value + ")"); },
-		notCharset: function (self, last, value) { return (self + "[^" + value + "]"); },
-		charset: function (self, last, value) { return (self + "[" + value + "]"); },
-		any: function (self, last, value) { return (self + "[" + value + "]"); },
-		anyOf: function (self, last, value) { return (self + "[" + value + "]"); },
-		size: function (self, last, value) { return (self + "{" + (0 | value) + "}"); },
-		atLeast: function (self, last, value) { return (self + "{" + (0 | value) + ",}"); },
-		atMost: function (self, last, value) { return (self + "{," + (0 | value) + "}"); },
-		group: function (self, last, value) { return (self + "(" + value + ")"); },
-		range: function (self, last, min, max) { return (self + "{" + (0 | min) + "," + (0 | max) + "}"); },
-		repeat: function (self, last, times) { return ("" + self + (new Array((0 | times) + 1).join(last))); },
+		quote: function (self, last, input) { return ('' + self + (val(input))); },
+		value: function (self, last, input) { return ('' + self + (src(input))); },
+		unicode: function (self, last, input) { return (self + '\\u' + input); },
+		control: function (self, last, input) { return (self + '\\c' + input); },
+		notRemember: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
+		then: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
+		find: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
+		maybe: function (self, last, input) { return (self + '(?:' + (src(input)) + ')*'); },
+		maybeOne: function (self, last, input) { return (self + '(?:' + (src(input)) + ')?'); },
+		ifFollowedBy: function (self, last, input) { return (self + '(?=' + (src(input)) + ')'); },
+		ifNotFollowedBy: function (self, last, input) { return (self + '(?!' + (src(input)) + ')'); },
+		anythingBut: function (self, last, input) { return (self + '(?:[^' + (src(input)) + ']*)'); },
+		somethingBut: function (self, last, input) { return (self + '(?:[^' + (src(input)) + ']+)'); },
+		notCharset: function (self, last, input) { return (self + '[^' + (src(input)) + ']'); },
+		charset: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
+		any: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
+		anyOf: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
+		group: function (self, last, input) { return (self + '(' + (src(input)) + ')'); },
+		size: function (self, last, input) { return (self + '{' + (0 | input) + '}'); },
+		atLeast: function (self, last, input) { return (self + '{' + (0 | input) + ',}'); },
+		atMost: function (self, last, input) { return (self + '{,' + (0 | input) + '}'); },
+		range: function (self, last, min, max) { return (self + '{' + (0 | min) + ',' + (0 | max) + '}'); },
+		repeat: function (self, last, times) { return ('' + self + (new Array((0 | times) + 1).join(last))); },
 		replace: function (self, last, pattern, replacement) { return self.replace(pattern, replacement); },
-		flags: function (self, last, value) { return new RegExp(self, value); },
+		flags: function (self, last, input) { return new RegExp(self, input); },
 		either: function (self, last) {
 			var rest = [], len = arguments.length - 2;
-			while (len-- > 0) rest[len] = arguments[len + 2];
-			return ("" + self + (rest.join('|')));
+			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
+			return ('' + self + (rest.join('|')));
 		},
 	};
 
@@ -246,6 +270,9 @@
 
 	exports.rules = rules;
 	exports.match = match;
+	exports.src = src;
+	exports.val = val;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
+
 })));

@@ -1,11 +1,25 @@
+import number from 'describe-type/source/is/number';
 import string from 'describe-type/source/is/string';
 import objectChain from 'object-chain';
 
-const reEscapeRegExp = /[-[\]{}()*+?.,\\^$|#\s]/g;
-const escapeRegExp = (value) => {
-	value = string(value) ? value : '';
+const reEscapeRegExp = /[-[/\]{}()*+?.,\\^$|#\s]/g;
+
+const escapeRegExp = (input) => {
+	input = string(input) ? input : '';
 	reEscapeRegExp.lastIndex = 0;
-	return value.replace(reEscapeRegExp, '\\$&');
+	return input.replace(reEscapeRegExp, '\\$&');
+};
+
+const src = (input) => {
+	if (input === undefined) return 'undefined';
+	if (input === null) return 'null';
+	if (input.source) return src(input.source);
+	return input;
+};
+
+const val = (input) => {
+	input = src(input);
+	return number(input) ? input : escapeRegExp(input);
 };
 
 const compositions = {
@@ -52,31 +66,31 @@ const compositions = {
 	endGroup: ')',
 	startCharset: '[',
 	endCharset: ']',
-	quote: (self, last, value) => `${self}${escapeRegExp(value)}`,
-	value: (self, last, value) => `${self}${value}`,
-	unicode: (self, last, value) => `${self}\\u${value}`,
-	control: (self, last, value) => `${self}\\c${value}`,
-	notRemember: (self, last, value) => `${self}(?:${value})`,
-	then: (self, last, value) => `${self}(?:${value})`,
-	find: (self, last, value) => `${self}(?:${value})`,
-	maybe: (self, last, value) => `${self}(?:${value})*`,
-	maybeOne: (self, last, value) => `${self}(?:${value})?`,
-	anythingBut: (self, last, value) => `${self}(?:[^${value}]*)`,
-	somethingBut: (self, last, value) => `${self}(?:[^${value}]+)`,
-	ifFollowedBy: (self, last, value) => `${self}(?=${value})`,
-	ifNotFollowedBy: (self, last, value) => `${self}(?!${value})`,
-	notCharset: (self, last, value) => `${self}[^${value}]`,
-	charset: (self, last, value) => `${self}[${value}]`,
-	any: (self, last, value) => `${self}[${value}]`,
-	anyOf: (self, last, value) => `${self}[${value}]`,
-	size: (self, last, value) => `${self}{${0 | value}}`,
-	atLeast: (self, last, value) => `${self}{${0 | value},}`,
-	atMost: (self, last, value) => `${self}{,${0 | value}}`,
-	group: (self, last, value) => `${self}(${value})`,
+	quote: (self, last, input) => `${self}${val(input)}`,
+	value: (self, last, input) => `${self}${src(input)}`,
+	unicode: (self, last, input) => `${self}\\u${input}`,
+	control: (self, last, input) => `${self}\\c${input}`,
+	notRemember: (self, last, input) => `${self}(?:${src(input)})`,
+	then: (self, last, input) => `${self}(?:${src(input)})`,
+	find: (self, last, input) => `${self}(?:${src(input)})`,
+	maybe: (self, last, input) => `${self}(?:${src(input)})*`,
+	maybeOne: (self, last, input) => `${self}(?:${src(input)})?`,
+	ifFollowedBy: (self, last, input) => `${self}(?=${src(input)})`,
+	ifNotFollowedBy: (self, last, input) => `${self}(?!${src(input)})`,
+	anythingBut: (self, last, input) => `${self}(?:[^${src(input)}]*)`,
+	somethingBut: (self, last, input) => `${self}(?:[^${src(input)}]+)`,
+	notCharset: (self, last, input) => `${self}[^${src(input)}]`,
+	charset: (self, last, input) => `${self}[${src(input)}]`,
+	any: (self, last, input) => `${self}[${src(input)}]`,
+	anyOf: (self, last, input) => `${self}[${src(input)}]`,
+	group: (self, last, input) => `${self}(${src(input)})`,
+	size: (self, last, input) => `${self}{${0 | input}}`,
+	atLeast: (self, last, input) => `${self}{${0 | input},}`,
+	atMost: (self, last, input) => `${self}{,${0 | input}}`,
 	range: (self, last, min, max) => `${self}{${0 | min},${0 | max}}`,
 	repeat: (self, last, times) => `${self}${new Array((0 | times) + 1).join(last)}`,
 	replace: (self, last, pattern, replacement) => self.replace(pattern, replacement),
-	flags: (self, last, value) => new RegExp(self, value),
+	flags: (self, last, input) => new RegExp(self, input),
 	either: (self, last, ...rest) => `${self}${rest.join('|')}`,
 };
 
@@ -87,4 +101,4 @@ const rules = (custom, override, middleware) => {
 	return objectChain(assign({}, custom, compositions, override), middleware);
 };
 
-export { rules, match };
+export { rules, match, src, val };
