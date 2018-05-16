@@ -54,7 +54,7 @@
     "read-argv": "1.0.0",
     "redrun": "6.0.4",
     "rimraf": "2.6.2",
-    "rollup": "0.59.0",
+    "rollup": "0.59.1",
     "rollup-plugin-babel": "4.0.0-beta.4",
     "rollup-plugin-buble": "0.19.2",
     "rollup-plugin-commonjs": "9.1.3",

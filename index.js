@@ -8,8 +8,8 @@
  *
  * ~~~~~~~~~~ rx4d v1.2.4
  *
- * @commit 82ba48a475176ded8a4b6c4bd3df04a1f96a04dd
- * @moment Wednesday, May 16, 2018 12:21 PM
+ * @commit be3bd410fadc74780b2e76921749a76192a9c086
+ * @moment Wednesday, May 16, 2018 1:40 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -149,8 +149,8 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
-					return connect(this.object.concat({ name: name, args: arguments }));
-				}, obj);
+				return connect(this.object.concat({ name: name, args: arguments }));
+			}, obj);
 			return acc;
 		}, create(null));
 
@@ -159,8 +159,8 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
-					return connect([{ name: name, args: arguments }]);
-				}, obj);
+				return connect([{ name: name, args: arguments }]);
+			}, obj);
 			return acc;
 		}, create(null)));
 	};
@@ -229,36 +229,36 @@
 		endGroup: ')',
 		startCharset: '[',
 		endCharset: ']',
-		quote: function (self, last, input) { return ("" + self + (val(input))); },
-		value: function (self, last, input) { return ("" + self + (src(input))); },
-		plus: function (self, last, input) { return ("" + self + (src(input))); },
-		unicode: function (self, last, input) { return (self + "\\u" + input); },
-		control: function (self, last, input) { return (self + "\\c" + input); },
-		notRemember: function (self, last, input) { return (self + "(?:" + (src(input)) + ")"); },
-		then: function (self, last, input) { return (self + "(?:" + (src(input)) + ")"); },
-		find: function (self, last, input) { return (self + "(?:" + (src(input)) + ")"); },
-		maybe: function (self, last, input) { return (self + "(?:" + (src(input)) + ")*"); },
-		maybeOne: function (self, last, input) { return (self + "(?:" + (src(input)) + ")?"); },
-		ifFollowedBy: function (self, last, input) { return (self + "(?=" + (src(input)) + ")"); },
-		ifNotFollowedBy: function (self, last, input) { return (self + "(?!" + (src(input)) + ")"); },
-		anythingBut: function (self, last, input) { return (self + "(?:[^" + (src(input)) + "]*)"); },
-		somethingBut: function (self, last, input) { return (self + "(?:[^" + (src(input)) + "]+)"); },
-		notCharset: function (self, last, input) { return (self + "[^" + (src(input)) + "]"); },
-		charset: function (self, last, input) { return (self + "[" + (src(input)) + "]"); },
-		any: function (self, last, input) { return (self + "[" + (src(input)) + "]"); },
-		anyOf: function (self, last, input) { return (self + "[" + (src(input)) + "]"); },
-		group: function (self, last, input) { return (self + "(" + (src(input)) + ")"); },
-		size: function (self, last, input) { return (self + "{" + (0 | input) + "}"); },
-		atLeast: function (self, last, input) { return (self + "{" + (0 | input) + ",}"); },
-		atMost: function (self, last, input) { return (self + "{," + (0 | input) + "}"); },
-		range: function (self, last, min, max) { return (self + "{" + (0 | min) + "," + (0 | max) + "}"); },
-		repeat: function (self, last, times) { return ("" + self + (new Array((0 | times) + 1).join(last))); },
+		quote: function (self, last, input) { return ('' + self + (val(input))); },
+		value: function (self, last, input) { return ('' + self + (src(input))); },
+		plus: function (self, last, input) { return ('' + self + (src(input))); },
+		unicode: function (self, last, input) { return (self + '\\u' + input); },
+		control: function (self, last, input) { return (self + '\\c' + input); },
+		notRemember: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
+		then: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
+		find: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
+		maybe: function (self, last, input) { return (self + '(?:' + (src(input)) + ')*'); },
+		maybeOne: function (self, last, input) { return (self + '(?:' + (src(input)) + ')?'); },
+		ifFollowedBy: function (self, last, input) { return (self + '(?=' + (src(input)) + ')'); },
+		ifNotFollowedBy: function (self, last, input) { return (self + '(?!' + (src(input)) + ')'); },
+		anythingBut: function (self, last, input) { return (self + '(?:[^' + (src(input)) + ']*)'); },
+		somethingBut: function (self, last, input) { return (self + '(?:[^' + (src(input)) + ']+)'); },
+		notCharset: function (self, last, input) { return (self + '[^' + (src(input)) + ']'); },
+		charset: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
+		any: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
+		anyOf: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
+		group: function (self, last, input) { return (self + '(' + (src(input)) + ')'); },
+		size: function (self, last, input) { return (self + '{' + (0 | input) + '}'); },
+		atLeast: function (self, last, input) { return (self + '{' + (0 | input) + ',}'); },
+		atMost: function (self, last, input) { return (self + '{,' + (0 | input) + '}'); },
+		range: function (self, last, min, max) { return (self + '{' + (0 | min) + ',' + (0 | max) + '}'); },
+		repeat: function (self, last, times) { return ('' + self + (new Array((0 | times) + 1).join(last))); },
 		replace: function (self, last, pattern, replacement) { return self.replace(pattern, replacement); },
 		flags: function (self, last, input) { return new RegExp(self, input); },
 		either: function (self, last) {
 			var rest = [], len = arguments.length - 2;
 			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
-			return ("" + self + (rest.join('|')));
+			return ('' + self + (rest.join('|')));
 		},
 	};
 
