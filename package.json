@@ -1,6 +1,6 @@
 {
   "name": "rx4d",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "Adrian C. Miranda",
   "description": "RegExp 4 dummies",
   "main": "index.js",

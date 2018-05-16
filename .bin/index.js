@@ -2,7 +2,7 @@ const { env } = require('./config');
 const rollup = require('./rollup');
 
 module.exports = ([{
-  module: 'objectChain',
+  module: 'rx4d',
   source: 'index.next',
   output: 'index',
   format: env.FORMATS,
