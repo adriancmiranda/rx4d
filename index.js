@@ -6,10 +6,10 @@
  *    '._  W    ,--'
  *       |_:_._/
  *
- * ~~~~~~~~~~ rx4d v1.2.4
+ * ~~~~~~~~~~ rx4d v1.3.0
  *
- * @commit be3bd410fadc74780b2e76921749a76192a9c086
- * @moment Wednesday, May 16, 2018 1:40 PM
+ * @commit 414f53fbc96b6e068f7a6f5dbacf504056e6b5bd
+ * @moment Friday, May 18, 2018 10:28 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -149,8 +149,8 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
-				return connect(this.object.concat({ name: name, args: arguments }));
-			}, obj);
+					return connect(this.object.concat({ name: name, args: arguments }));
+				}, obj);
 			return acc;
 		}, create(null));
 
@@ -159,8 +159,8 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
-				return connect([{ name: name, args: arguments }]);
-			}, obj);
+					return connect([{ name: name, args: arguments }]);
+				}, obj);
 			return acc;
 		}, create(null)));
 	};
@@ -207,9 +207,11 @@
 		nonDigit: '\\D',
 		formFeed: '\\f',
 		lineFeed: '\\n',
+		lineBreak: '\\r\\n?|\\n|\\u2028|\\u2029',
 		carriageReturn: '\\r',
 		whiteSpace: '\\s',
 		notWhiteSpace: '\\S',
+		nonASCIIwhitespace: '[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]',
 		tab: '\\t',
 		verticalTab: '\\v',
 		alphanumeric: '\\w',
@@ -257,7 +259,7 @@
 		flags: function (self, last, input) { return new RegExp(self, input); },
 		either: function (self, last) {
 			var rest = [], len = arguments.length - 2;
-			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
+			while (len-- > 0) rest[len] = arguments[len + 2];
 			return ('' + self + (rest.join('|')));
 		},
 	};
