@@ -89,9 +89,11 @@ digit: '\\d'
 nonDigit: '\\D'
 formFeed: '\\f'
 lineFeed: '\\n'
+lineBreak: '\\r\\n?|\\n|\\u2028|\\u2029'
 carriageReturn: '\\r'
 whiteSpace: '\\s'
 notWhiteSpace: '\\S'
+nonASCIIwhitespace: '[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]'
 tab: '\\t'
 verticalTab: '\\v'
 alphanumeric: '\\w'
@@ -111,6 +113,7 @@ startGroup: '('
 endGroup: ')'
 startCharset: '['
 endCharset: ']'
+modifier(input)
 quote(value)
 value(value)
 plus(value)
