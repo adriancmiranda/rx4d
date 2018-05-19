@@ -8,8 +8,8 @@
  *
  * ~~~~~~~~~~ rx4d v1.3.0
  *
- * @commit 414f53fbc96b6e068f7a6f5dbacf504056e6b5bd
- * @moment Friday, May 18, 2018 10:28 PM
+ * @commit 2dc5fa9e3a37798a1eef8cf6d504db2a9b9de560
+ * @moment Friday, May 18, 2018 10:36 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -148,9 +148,9 @@
 		var descriptors = keys(object).reduce(function (acc, name) {
 			var obj;
 			var isfn = callable(object[name]);
-			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
-					return connect(this.object.concat({ name: name, args: arguments }));
-				}, obj);
+			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
+				return connect(this.object.concat({ name: name, args: arguments }));
+			}, obj);
 			return acc;
 		}, create(null));
 
@@ -159,8 +159,8 @@
 			var obj;
 			var isfn = callable(object[name]);
 			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
-					return connect([{ name: name, args: arguments }]);
-				}, obj);
+				return connect([{ name: name, args: arguments }]);
+			}, obj);
 			return acc;
 		}, create(null)));
 	};
@@ -231,6 +231,7 @@
 		endGroup: ')',
 		startCharset: '[',
 		endCharset: ']',
+		modifier: function (self, last, input) { return (self + '(?' + input + ')'); },
 		quote: function (self, last, input) { return ('' + self + (val(input))); },
 		value: function (self, last, input) { return ('' + self + (src(input))); },
 		plus: function (self, last, input) { return ('' + self + (src(input))); },
@@ -277,4 +278,5 @@
 	exports.val = val;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
+
 })));
