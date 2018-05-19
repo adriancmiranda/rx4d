@@ -8,8 +8,8 @@
  *
  * ~~~~~~~~~~ rx4d v1.3.0
  *
- * @commit 2dc5fa9e3a37798a1eef8cf6d504db2a9b9de560
- * @moment Friday, May 18, 2018 10:36 PM
+ * @commit f1195d99aacad1e1c3c4353332c84910bb3e0625
+ * @moment Friday, May 18, 2018 10:56 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -148,7 +148,7 @@
 		var descriptors = keys(object).reduce(function (acc, name) {
 			var obj;
 			var isfn = callable(object[name]);
-			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
+			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
 				return connect(this.object.concat({ name: name, args: arguments }));
 			}, obj);
 			return acc;
@@ -166,7 +166,6 @@
 	};
 
 	var reEscapeRegExp = /[-[/\]{}()*+?.,\\^$|#\s]/g;
-
 	var escapeRegExp = function (input) {
 		input = string(input) ? input : '';
 		reEscapeRegExp.lastIndex = 0;
@@ -211,7 +210,7 @@
 		carriageReturn: '\\r',
 		whiteSpace: '\\s',
 		notWhiteSpace: '\\S',
-		nonASCIIwhitespace: '[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]',
+		nonASCIIWhiteSpace: '[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]',
 		tab: '\\t',
 		verticalTab: '\\v',
 		alphanumeric: '\\w',
@@ -278,5 +277,4 @@
 	exports.val = val;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
-
 })));

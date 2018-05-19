@@ -48,7 +48,7 @@ const compositions = {
 	carriageReturn: '\\r',
 	whiteSpace: '\\s',
 	notWhiteSpace: '\\S',
-	nonASCIIwhitespace: '[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]',
+	nonASCIIWhiteSpace: '[\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]',
 	tab: '\\t',
 	verticalTab: '\\v',
 	alphanumeric: '\\w',
