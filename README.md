@@ -113,7 +113,6 @@ startGroup: '('
 endGroup: ')'
 startCharset: '['
 endCharset: ']'
-modifier(input)
 quote(value)
 value(value)
 plus(value)

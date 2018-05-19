@@ -8,8 +8,8 @@
  *
  * ~~~~~~~~~~ rx4d v1.3.0
  *
- * @commit f1195d99aacad1e1c3c4353332c84910bb3e0625
- * @moment Friday, May 18, 2018 10:56 PM
+ * @commit 9666d051dc8d838308b83018598ef21ddb2b4076
+ * @moment Friday, May 18, 2018 11:14 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
@@ -230,7 +230,6 @@
 		endGroup: ')',
 		startCharset: '[',
 		endCharset: ']',
-		modifier: function (self, last, input) { return (self + '(?' + input + ')'); },
 		quote: function (self, last, input) { return ('' + self + (val(input))); },
 		value: function (self, last, input) { return ('' + self + (src(input))); },
 		plus: function (self, last, input) { return ('' + self + (src(input))); },
@@ -277,4 +276,5 @@
 	exports.val = val;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
+
 })));

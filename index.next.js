@@ -68,7 +68,6 @@ const compositions = {
 	endGroup: ')',
 	startCharset: '[',
 	endCharset: ']',
-	modifier: (self, last, input) => `${self}(?${input})`,
 	quote: (self, last, input) => `${self}${val(input)}`,
 	value: (self, last, input) => `${self}${src(input)}`,
 	plus: (self, last, input) => `${self}${src(input)}`,
