@@ -1,18 +1,31 @@
+import nil from 'describe-type/source/is/nil';
+import undef from 'describe-type/source/is/undef';
 import number from 'describe-type/source/is/number';
 import string from 'describe-type/source/is/string';
 import objectChain from 'object-chain';
+import Rx from './rx.next';
 
-const reEscapeRegExp = /[-[/\]{}()*+?.,\\^$|#\s]/g;
+const RE_ESCAPE_REGEXP = /[-[/\]{}()*+?.,\\^$|#\s]/g;
+const RE_UNICODE_PREFIX = /^\\[xu]{1}/;
 
 const escapeRegExp = (input) => {
 	input = string(input) ? input : '';
-	reEscapeRegExp.lastIndex = 0;
-	return input.replace(reEscapeRegExp, '\\$&');
+	RE_ESCAPE_REGEXP.lastIndex = 0;
+	return input.replace(RE_ESCAPE_REGEXP, '\\$&');
 };
 
+const repeat = (input, count) => {
+	count = 0 | count;
+	return new Array(size < 0 ? 0 : size + 1).join(input);
+};
+
+const pad = (input, width) => (
+	input.length < width ? repeat(input, width) : input
+);
+
 const src = (input) => {
-	if (input === undefined) return 'undefined';
-	if (input === null) return 'null';
+	if (undef(input)) return 'undefined';
+	if (nil(input)) return 'null';
 	if (input.source) return src(input.source);
 	return input;
 };
@@ -20,6 +33,19 @@ const src = (input) => {
 const val = (input) => {
 	input = src(input);
 	return number(input) ? input : escapeRegExp(input);
+};
+
+const code = (input) => {
+	input = src(input);
+	const isstr = string(input);
+	if (isstr && RE_UNICODE_PREFIX.test(input)) {
+		return input;
+	} else if (isstr || number(input)) {
+		const hex = input.toString(16);
+		if (hex.length < 3) return `\\x${pad(0, 2)}${hex}`;
+		return `\\u${pad(0, 4)}${hex}`;
+	}
+	return isstr ? input : '';
 };
 
 const compositions = {
@@ -71,7 +97,9 @@ const compositions = {
 	quote: (self, last, input) => `${self}${val(input)}`,
 	value: (self, last, input) => `${self}${src(input)}`,
 	plus: (self, last, input) => `${self}${src(input)}`,
-	unicode: (self, last, input) => `${self}\\u${input}`,
+	u: (self, last, input) => `${self}\\u${input}`,
+	x: (self, last, input) => `${self}\\x${input}`,
+	unicode: (self, last, input) => `${self}${code(input)}`,
 	control: (self, last, input) => `${self}\\c${input}`,
 	notRemember: (self, last, input) => `${self}(?:${src(input)})`,
 	then: (self, last, input) => `${self}(?:${src(input)})`,
@@ -91,17 +119,17 @@ const compositions = {
 	atLeast: (self, last, input) => `${self}{${0 | input},}`,
 	atMost: (self, last, input) => `${self}{,${0 | input}}`,
 	range: (self, last, min, max) => `${self}{${0 | min},${0 | max}}`,
-	repeat: (self, last, times) => `${self}${new Array((0 | times) + 1).join(last)}`,
+	repeat: (self, last, count) => `${self}${repeat(last, count)}`,
 	replace: (self, last, pattern, replacement) => self.replace(pattern, replacement),
-	flags: (self, last, input) => new RegExp(self, input),
+	flags: (self, last, input) => new Rx(self, input),
 	either: (self, last, ...rest) => `${self}${rest.join('|')}`,
 };
 
 const { assign } = Object;
 const match = objectChain(compositions);
 const rules = (custom, override, middleware) => {
-	if (custom === undefined || custom === null) return match;
+	if (undef(custom) || nil(custom)) return match;
 	return objectChain(assign({}, custom, compositions, override), middleware);
 };
 
-export { rules, match, src, val };
+export { rules, match, src, val, code, pad, repeat };

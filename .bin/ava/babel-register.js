@@ -1,8 +1,8 @@
 const { dependencies } = require('../../package.json');
-require('@babel/polyfill');
+const { keys } = Object;
 require('@babel/register')({
-  only: Object.keys(dependencies).reduce((acc, dependency) => {
-    acc.unshift(`./node_modules/${dependency}/source/**/*.js`);
+  only: keys(dependencies).reduce((acc, dependency) => {
+    acc.unshift(`./node_modules/${dependency}/{src,source}/**/*.js`);
     return acc;
-  }, ['./index.next.js']),
+  }, ['./rx.next.js', './index.next.js']),
 });

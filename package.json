@@ -29,12 +29,13 @@
     "object-chain": "1.1.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.46",
-    "@babel/plugin-external-helpers": "7.0.0-beta.46",
-    "@babel/plugin-transform-runtime": "7.0.0-beta.46",
-    "@babel/polyfill": "7.0.0-beta.46",
-    "@babel/preset-env": "7.0.0-beta.46",
-    "@babel/register": "7.0.0-beta.46",
+    "@babel/cli": "7.0.0-beta.47",
+    "@babel/plugin-external-helpers": "7.0.0-beta.47",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.47",
+    "@babel/plugin-transform-classes": "7.0.0-beta.47",
+    "@babel/polyfill": "7.0.0-beta.47",
+    "@babel/preset-env": "7.0.0-beta.47",
+    "@babel/register": "7.0.0-beta.47",
     "@commitlint/cli": "6.2.0",
     "@commitlint/config-conventional": "6.1.3",
     "ava": "1.0.0-beta.4",
@@ -55,7 +56,7 @@
     "redrun": "6.0.4",
     "rimraf": "2.6.2",
     "rollup": "0.59.1",
-    "rollup-plugin-babel": "4.0.0-beta.4",
+    "rollup-plugin-babel": "^4.0.0-beta.4",
     "rollup-plugin-buble": "0.19.2",
     "rollup-plugin-commonjs": "9.1.3",
     "rollup-plugin-filesize": "1.5.0",
@@ -67,6 +68,7 @@
   },
   "ava": {
     "require": [
+      "@babel/polyfill",
       "./.bin/ava/babel-register.js"
     ]
   },
@@ -79,6 +81,10 @@
   },
   "files": [
     "example",
+    "rx.js",
+    "rx.min.js",
+    "rx.min.js.map",
+    "rx.next.js",
     "index.js",
     "index.min.js",
     "index.min.js.map",
