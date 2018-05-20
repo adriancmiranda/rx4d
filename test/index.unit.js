@@ -134,7 +134,6 @@ test('rx4d#either', t => {
 		'break',
 		'case',
 		'catch',
-		'class',
 		'const',
 		'continue',
 		'debugger',
@@ -142,20 +141,16 @@ test('rx4d#either', t => {
 		'delete',
 		'do',
 		'else',
-		'export',
-		'extends',
 		'false',
 		'finally',
 		'for',
 		'function',
 		'if',
-		'import',
 		'in',
 		'instanceof',
 		'new',
 		'null',
 		'return',
-		'super',
 		'switch',
 		'this',
 		'throw',
@@ -166,6 +161,13 @@ test('rx4d#either', t => {
 		'void',
 		'while',
 		'with'
+	);
+	const es6Keywords = match.value(keywords).either(
+		'class',
+		'extends',
+		'export',
+		'import',
+		'super'
 	);
 	t.is('', reservedWords(), '"reservedWords" should be ');
 	t.is('', reservedWordsStrict(), '"reservedWordsStrict" should be ');
