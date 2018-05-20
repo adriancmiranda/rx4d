@@ -173,6 +173,7 @@ test('rx4d#either', t => {
 	t.is('', reservedWordsStrict(), '"reservedWordsStrict" should be ');
 	t.is('', reservedWordsStrictBind(), '"reservedWordsStrictBind" should be ');
 	t.is('', keywords(), '"keywords" should be ');
+	t.is('', es6Keywords(), '"es6Keywords" should be ');
 });
 
 test('rx4d#simple', t => {
