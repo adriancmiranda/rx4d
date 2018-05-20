@@ -32,3 +32,59 @@ test('rx4d#complex', t => {
 	t.is(reNamedExpression.source, raw.source, `should be equal to ${raw.source}`);
 	t.is(reNamedExpression.flags, raw.flags, 'should be "gm"');
 });
+
+test('rx4d#either', t => {
+	const reservedWords = match.value('enum');
+	const reservedWordsStrict = match.value(reservedWords).or.either(
+		'implements',
+		'interface',
+		'let',
+		'package',
+		'private',
+		'protected',
+		'public',
+		'static',
+		'yield'
+	);
+	const reservedWordsStrictBind = match.value(reservedWordsStrict).or.either(
+		'eval',
+		'arguments'
+	);
+	const keywords = match.either(
+		'break',
+		'case',
+		'catch',
+		'class',
+		'const',
+		'continue',
+		'debugger',
+		'default',
+		'delete',
+		'do',
+		'else',
+		'export',
+		'extends',
+		'false',
+		'finally',
+		'for',
+		'function',
+		'if',
+		'import',
+		'in',
+		'instanceof',
+		'new',
+		'null',
+		'return',
+		'super',
+		'switch',
+		'this',
+		'throw',
+		'true',
+		'try',
+		'typeof',
+		'var',
+		'void',
+		'while',
+		'with'
+	);
+});
