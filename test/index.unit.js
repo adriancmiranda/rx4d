@@ -87,4 +87,8 @@ test('rx4d#either', t => {
 		'while',
 		'with'
 	);
+	t.is('', reservedWords(), '"reservedWords" should be ');
+	t.is('', reservedWordsStrict(), '"reservedWordsStrict" should be ');
+	t.is('', reservedWordsStrictBind(), '"reservedWordsStrictBind" should be ');
+	t.is('', keywords(), '"keywords" should be ');
 });
