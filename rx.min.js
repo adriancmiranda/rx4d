@@ -8,8 +8,8 @@
  *                       
  * ~~~~~~~~~~ rx4d v1.3.0
  * 
- * @commit 8869af1335903f41018113534c5fdd2564af91f6
- * @moment Sunday, May 20, 2018 2:39 PM
+ * @commit fb9ba34e3b3e5baf879a9fc16e5db185bc680ba5
+ * @moment Saturday, May 26, 2018 7:34 AM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
  * @license (c) 2016-2021 Adrian C. Miranda
