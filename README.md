@@ -1,4 +1,6 @@
 # rx4d
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fadriancmiranda%2Frx4d.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fadriancmiranda%2Frx4d?ref=badge_shield)
+
 > RegExp 4 dummies
 
 ## Usage:
@@ -167,3 +169,7 @@ module.exports = rules(customRules, overrideRules);
 [regexhub]: https://projects.lukehaas.me/regexhub/
 [Unicode range RegExp generator]: https://apps.timwhitlock.info/js/regex
 [documentation]: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/regexp
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fadriancmiranda%2Frx4d.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fadriancmiranda%2Frx4d?ref=badge_large)
