@@ -1,5 +1,5 @@
-import number from 'describe-type/source/is/number';
-import string from 'describe-type/source/is/string';
+import number from 'describe-type/is/number';
+import string from 'describe-type/is/string';
 import objectChain from 'object-chain';
 
 const reEscapeRegExp = /[-[/\]{}()*+?.,\\^$|#\s]/g;

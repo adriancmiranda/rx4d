@@ -1,35 +1,58 @@
 /*!
- *    /     '      /  /
- *   /__      ___ (  /
- *   \--`-'-|`---\ |
- *    |' _/   ` __/ /
- *    '._  W    ,--'
- *       |_:_._/
- *
+ *    /     '      /  / 
+ *   /__      ___ (  /   
+ *   \--`-'-|`---\ |  
+ *    |' _/   ` __/ /   
+ *    '._  W    ,--'   
+ *       |_:_._/         
+ *                       
  * ~~~~~~~~~~ rx4d v1.3.0
- *
- * @commit 9666d051dc8d838308b83018598ef21ddb2b4076
- * @moment Friday, May 18, 2018 11:14 PM
+ * 
+ * @commit 73c89892ad
+ * @moment Saturday, May 16, 2020 6:24 PM
  * @homepage https://github.com/adriancmiranda/rx4d#readme
  * @author Adrian C. Miranda
- * @license (c) 2016-2021 Adrian C. Miranda
+ * @license (c) 2016-2023 Adrian C. Miranda
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.rx4d = {})));
+	(global = global || self, factory(global.rx4d = {}));
 }(this, (function (exports) { 'use strict';
 
-	/**
-	 *
-	 * @function
-	 * @memberof is
-	 * @param {any} value
-	 * @returns {Boolean}
-	 */
-	function number(value) {
-		return typeof value === 'number' || value instanceof Number;
-	}
+	var NUMBER = 'number';
+	var BOOLEAN = 'boolean';
+	var STRING = 'string';
+	var SYMBOL = 'symbol';
+	var OBJECT = 'object';
+	var FUNCTION = 'function';
+	var NULL = 'null';
+	var UNDEFINED = 'undefined';
+	var ARGUMENTS = 'Arguments';
+	var INFINITY = 'Infinity';
+	var NAN = 'NaN';
+	var CONSTRUCTOR = 'constructor';
+	var ARGUMENTS_SEAL = '[object Arguments]';
+	var CALLEE = 'callee';
+
+	var constants = {
+		NUMBER: NUMBER,
+		BOOLEAN: BOOLEAN,
+		STRING: STRING,
+		SYMBOL: SYMBOL,
+		OBJECT: OBJECT,
+		FUNCTION: FUNCTION,
+		NULL: NULL,
+		UNDEFINED: UNDEFINED,
+		ARGUMENTS: ARGUMENTS,
+		INFINITY: INFINITY,
+		NAN: NAN,
+		CONSTRUCTOR: CONSTRUCTOR,
+		ARGUMENTS_SEAL: ARGUMENTS_SEAL,
+		CALLEE: CALLEE
+	};
+
+	var NUMBER$1 = constants.NUMBER;
 
 	/**
 	 *
@@ -38,9 +61,36 @@
 	 * @param {any} value
 	 * @returns {Boolean}
 	 */
-	function string(value) {
-		return typeof value === 'string' || value instanceof String;
-	}
+	var number = function number(value) {
+		return typeof value === NUMBER$1 || value instanceof Number;
+	};
+
+	var STRING$1 = constants.STRING;
+
+	/**
+	 *
+	 * @function
+	 * @memberof is
+	 * @param {any} value
+	 * @returns {Boolean}
+	 */
+	var string = function string(value) {
+		return typeof value === STRING$1 || value instanceof String;
+	};
+
+	/**
+	 *
+	 * @function
+	 * @memberof is
+	 * @param {any} value
+	 * @returns {Boolean}
+	 */
+	var string_empty = function isEmptyString(value) {
+		return string(value) && value.length === 0;
+	};
+
+	string.empty = string_empty;
+	var string_1 = string;
 
 	/**
 	 *
@@ -72,8 +122,19 @@
 	 * @param {any} value
 	 * @returns {Boolean}
 	 */
+	function string$1(value) {
+		return typeof value === 'string' || value instanceof String;
+	}
+
+	/**
+	 *
+	 * @function
+	 * @memberof is
+	 * @param {any} value
+	 * @returns {Boolean}
+	 */
 	function arraylike(value) {
-		return array(value) || string(value) || (
+		return array(value) || string$1(value) || (
 			(!!value && typeof value === 'object' && typeof value.length === 'number') &&
 			(value.length === 0 || (value.length > 0 && (value.length - 1) in value))
 		);
@@ -122,12 +183,13 @@
 
 	var transform = function (object, middleware) {
 		function chain() {
-			var ctx = this;
+			var this$1 = this;
+
 			var last = '';
 			var pattern = this.object.reduce(function (acc, item) {
 				if (callable(object[item.name])) {
 					var args = processArgs(item.args, [acc, last]);
-					acc = apply(object[item.name], ctx, args);
+					acc = apply(object[item.name], this$1, args);
 					last = acc;
 				} else {
 					acc += object[item.name];
@@ -147,27 +209,30 @@
 
 		var descriptors = keys(object).reduce(function (acc, name) {
 			var obj;
+
 			var isfn = callable(object[name]);
-			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
-				return connect(this.object.concat({ name: name, args: arguments }));
-			}, obj);
+			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function connector() {
+					return connect(this.object.concat({ name: name, args: arguments }));
+				}, obj );
 			return acc;
 		}, create(null));
 
 		var proto = defineProperties(function ObjectChain() {}, descriptors);
 		return defineProperties({ object: object }, keys(descriptors).reduce(function (acc, name) {
 			var obj;
+
 			var isfn = callable(object[name]);
-			acc[name] = (obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
-				return connect([{ name: name, args: arguments }]);
-			}, obj);
+			acc[name] = ( obj = {}, obj[isfn ? 'value' : 'get'] = function startup() {
+					return connect([{ name: name, args: arguments }]);
+				}, obj );
 			return acc;
 		}, create(null)));
 	};
 
 	var reEscapeRegExp = /[-[/\]{}()*+?.,\\^$|#\s]/g;
+
 	var escapeRegExp = function (input) {
-		input = string(input) ? input : '';
+		input = string_1(input) ? input : '';
 		reEscapeRegExp.lastIndex = 0;
 		return input.replace(reEscapeRegExp, '\\$&');
 	};
@@ -230,37 +295,38 @@
 		endGroup: ')',
 		startCharset: '[',
 		endCharset: ']',
-		quote: function (self, last, input) { return ('' + self + (val(input))); },
-		value: function (self, last, input) { return ('' + self + (src(input))); },
-		plus: function (self, last, input) { return ('' + self + (src(input))); },
-		unicode: function (self, last, input) { return (self + '\\u' + input); },
-		control: function (self, last, input) { return (self + '\\c' + input); },
-		notRemember: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
-		then: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
-		find: function (self, last, input) { return (self + '(?:' + (src(input)) + ')'); },
-		maybe: function (self, last, input) { return (self + '(?:' + (src(input)) + ')*'); },
-		maybeOne: function (self, last, input) { return (self + '(?:' + (src(input)) + ')?'); },
-		ifFollowedBy: function (self, last, input) { return (self + '(?=' + (src(input)) + ')'); },
-		ifNotFollowedBy: function (self, last, input) { return (self + '(?!' + (src(input)) + ')'); },
-		anythingBut: function (self, last, input) { return (self + '(?:[^' + (src(input)) + ']*)'); },
-		somethingBut: function (self, last, input) { return (self + '(?:[^' + (src(input)) + ']+)'); },
-		notCharset: function (self, last, input) { return (self + '[^' + (src(input)) + ']'); },
-		charset: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
-		any: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
-		anyOf: function (self, last, input) { return (self + '[' + (src(input)) + ']'); },
-		group: function (self, last, input) { return (self + '(' + (src(input)) + ')'); },
-		size: function (self, last, input) { return (self + '{' + (0 | input) + '}'); },
-		atLeast: function (self, last, input) { return (self + '{' + (0 | input) + ',}'); },
-		atMost: function (self, last, input) { return (self + '{,' + (0 | input) + '}'); },
-		range: function (self, last, min, max) { return (self + '{' + (0 | min) + ',' + (0 | max) + '}'); },
-		repeat: function (self, last, times) { return ('' + self + (new Array((0 | times) + 1).join(last))); },
+		quote: function (self, last, input) { return ("" + self + (val(input))); },
+		value: function (self, last, input) { return ("" + self + (src(input))); },
+		plus: function (self, last, input) { return ("" + self + (src(input))); },
+		unicode: function (self, last, input) { return (self + "\\u" + input); },
+		control: function (self, last, input) { return (self + "\\c" + input); },
+		notRemember: function (self, last, input) { return (self + "(?:" + (src(input)) + ")"); },
+		then: function (self, last, input) { return (self + "(?:" + (src(input)) + ")"); },
+		find: function (self, last, input) { return (self + "(?:" + (src(input)) + ")"); },
+		maybe: function (self, last, input) { return (self + "(?:" + (src(input)) + ")*"); },
+		maybeOne: function (self, last, input) { return (self + "(?:" + (src(input)) + ")?"); },
+		ifFollowedBy: function (self, last, input) { return (self + "(?=" + (src(input)) + ")"); },
+		ifNotFollowedBy: function (self, last, input) { return (self + "(?!" + (src(input)) + ")"); },
+		anythingBut: function (self, last, input) { return (self + "(?:[^" + (src(input)) + "]*)"); },
+		somethingBut: function (self, last, input) { return (self + "(?:[^" + (src(input)) + "]+)"); },
+		notCharset: function (self, last, input) { return (self + "[^" + (src(input)) + "]"); },
+		charset: function (self, last, input) { return (self + "[" + (src(input)) + "]"); },
+		any: function (self, last, input) { return (self + "[" + (src(input)) + "]"); },
+		anyOf: function (self, last, input) { return (self + "[" + (src(input)) + "]"); },
+		group: function (self, last, input) { return (self + "(" + (src(input)) + ")"); },
+		size: function (self, last, input) { return (self + "{" + (0 | input) + "}"); },
+		atLeast: function (self, last, input) { return (self + "{" + (0 | input) + ",}"); },
+		atMost: function (self, last, input) { return (self + "{," + (0 | input) + "}"); },
+		range: function (self, last, min, max) { return (self + "{" + (0 | min) + "," + (0 | max) + "}"); },
+		repeat: function (self, last, times) { return ("" + self + (new Array((0 | times) + 1).join(last))); },
 		replace: function (self, last, pattern, replacement) { return self.replace(pattern, replacement); },
 		flags: function (self, last, input) { return new RegExp(self, input); },
 		either: function (self, last) {
 			var rest = [], len = arguments.length - 2;
-			while (len-- > 0) rest[len] = arguments[len + 2];
-			return ('' + self + (rest.join('|')));
-		},
+			while ( len-- > 0 ) rest[ len ] = arguments[ len + 2 ];
+
+			return ("" + self + (rest.join('|')));
+	},
 	};
 
 	var assign = Object.assign;
@@ -270,8 +336,8 @@
 		return transform(assign({}, custom, compositions, override), middleware);
 	};
 
-	exports.rules = rules;
 	exports.match = match;
+	exports.rules = rules;
 	exports.src = src;
 	exports.val = val;
 

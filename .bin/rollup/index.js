@@ -1,8 +1,8 @@
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
+const buble = require('@rollup/plugin-buble');
+const commonjs = require('@rollup/plugin-commonjs');
+const nodeResolve = require('@rollup/plugin-node-resolve');
 const optimizeJs = require('rollup-plugin-optimize-js');
 const filesize = require('rollup-plugin-filesize');
-const buble = require('rollup-plugin-buble');
 const { terser } = require('rollup-plugin-terser');
 const { minify } = require('uglify-es');
 const { env, flag } = require('../config');

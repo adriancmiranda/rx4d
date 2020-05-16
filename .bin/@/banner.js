@@ -6,7 +6,7 @@ const assign = Object.assign;
 moment.locale();
 
 module.exports = (pack, git, options) => pirateFlag(pack, {
-  commit: git.commithash(),
+  commit: git.abbreviatedSha,
   moment: moment().format('LLLL'),
   homepage: pack.homepage,
   author: pack.author,

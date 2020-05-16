@@ -1,4 +1,4 @@
-const Git = require('git-revision-webpack-plugin');
+const getRepoInfo = require('git-repo-info');
 const readArgv = require('read-argv');
 const { resolve, dirname } = require('path');
 const { params } = require('./@/env');
@@ -8,7 +8,7 @@ exports.pack = require('../package.json');
 
 exports.source = resolve(dirname(exports.pack.module));
 
-exports.git = new Git({ lightweightTags: true, branch: true });
+exports.git = getRepoInfo();
 
 exports.argv = readArgv(process.argv);
 
