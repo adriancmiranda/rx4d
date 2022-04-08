@@ -53,7 +53,7 @@
     "eslint-plugin-react": "7.20.0",
     "git-repo-info": "2.1.1",
     "husky": "4.2.5",
-    "moment": "2.25.3",
+    "moment": "2.29.2",
     "pirate-flag": "0.1.0",
     "read-argv": "1.0.0",
     "redrun": "8.0.0",
